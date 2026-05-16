@@ -17,7 +17,7 @@ import {
 
 export default function Home() {
   // Configuración técnica de red segmentada con el valor por defecto solicitado
-  const [n8nBaseUrl, setN8nBaseUrl] = useState("http://localhost");
+  const [n8nBaseUrl, setN8nBaseUrl] = useState("http://127.0.0.1");
   const [n8nPort, setN8nPort] = useState("5001");
   const [workflowPath, setWorkflowPath] = useState("/webhook/pdp-seo-audit");
   
