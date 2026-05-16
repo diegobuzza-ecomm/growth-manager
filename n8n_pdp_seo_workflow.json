@@ -1,0 +1,194 @@
+{
+  "name": "PDP SEO Optimizer Workflow (ScrapingBee + IA 2026)",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "pdp-seo-audit",
+        "responseMode": "onReceived",
+        "responseData": "allEntries",
+        "options": {}
+      },
+      "id": "1de54f2a-89a1-423b-9e42-1a2b3c4d5e6f",
+      "name": "Webhook Recibir URLs",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1.1,
+      "position": [100, 300]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Convertir el array de URLs recibido en items individuales para procesar en lote\nconst urls = $input.item.json.urls || [];\nreturn urls.map(url => ({ json: { url } }));"
+      },
+      "id": "2de54f2a-89a1-423b-9e42-1a2b3c4d5e6f",
+      "name": "Preparar Items de URL",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [300, 300]
+    },
+    {
+      "parameters": {
+        "batchSize": 1,
+        "options": {}
+      },
+      "id": "3de54f2a-89a1-423b-9e42-1a2b3c4d5e6f",
+      "name": "Split in Batches",
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [500, 300]
+    },
+    {
+      "parameters": {
+        "url": "https://app.scrapingbee.com/api/v1/",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "api_key",
+              "value": "TU_SCRAPINGBEE_API_KEY"
+            },
+            {
+              "name": "url",
+              "value": "={{ $json.url }}"
+            },
+            {
+              "name": "render_js",
+              "value": "true"
+            },
+            {
+              "name": "extract_rules",
+              "value": "{\"title\":\"title\",\"description\":\"meta[name='description']@content\",\"body\":\"body\"}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "4de54f2a-89a1-423b-9e42-1a2b3c4d5e6f",
+      "name": "ScrapingBee Render HTML",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [700, 300]
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ 'Analiza el siguiente contenido extraído de la página de producto: ' + JSON.stringify($json) }}",
+        "messages": {
+          "messageValues": [
+            {
+              "role": "system",
+              "content": "Actúa como un Experto Internacional en SEO de E-commerce y Copywriting Persuasivo (Estrategia 2026). Tu objetivo es redactar una descripción de producto completamente optimizada en castellano.\n\nReglas y Mejores Prácticas SEO 2026 a aplicar:\n1. Palabras Clave Semánticas (LSI): Identifica la intención de búsqueda e integra términos semánticos naturales sin keyword stuffing.\n2. Legibilidad y UX: Estructura en párrafos cortos, viñetas de beneficios clave y tono de marca premium.\n3. Search Engine Bots: Asegúrate de incluir la propuesta de valor principal en las primeras 100 palabras para facilitar la indexación y fragmentos destacados (featured snippets).\n4. Llamadas a la Acción (CTA): Cierra con un CTA de alta conversión.\n\nDevuelve la respuesta en formato JSON estricto con dos claves: 'product_name' (o SKU inferido) y 'suggested_seo_description' (en formato HTML limpio listo para inyectar en la tienda)."
+            }
+          ]
+        }
+      },
+      "id": "5de54f2a-89a1-423b-9e42-1a2b3c4d5e6f",
+      "name": "IA Generador SEO (Gemini/OpenAI)",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.1,
+      "position": [900, 300]
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "options": {}
+      },
+      "id": "6de54f2a-89a1-423b-9e42-1a2b3c4d5e6f",
+      "name": "Acumulador de Resultados",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1100, 300]
+    },
+    {
+      "parameters": {
+        "fromEmail": "auditor-seo@midominio.com",
+        "toEmail": "experto-seo@agencia.com",
+        "subject": "={{ 'Reporte Final: Optimización SEO de PDPs (' + $items().length + ' productos)' }}",
+        "emailFormat": "html",
+        "html": "={{ '\n<h2>Reporte Consolidado de Optimización SEO para PDPs</h2>\n<p>Se ha completado el procesamiento del lote con ScrapingBee e Inteligencia Artificial aplicando directrices SEO 2026.</p>\n<table border=\"1\" cellpadding=\"10\" style=\"border-collapse: collapse; width: 100%; font-family: Arial, sans-serif;\">\n  <tr style=\"background-color: #4f46e5; color: white;\">\n    <th>SKU / Nombre de Producto</th>\n    <th>Descripción Sugerida (SEO 2026 + UX)</th>\n  </tr>\n  ' + $items().map(item => `<tr><td><strong>${item.json.product_name || 'Desconocido'}</strong></td><td>${item.json.suggested_seo_description || ''}</td></tr>`).join('') + '\n</table>\n' }}"
+      },
+      "id": "7de54f2a-89a1-423b-9e42-1a2b3c4d5e6f",
+      "name": "Enviar Reporte Email",
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 2,
+      "position": [1300, 300]
+    }
+  ],
+  "connections": {
+    "Webhook Recibir URLs": {
+      "main": [
+        [
+          {
+            "node": "Preparar Items de URL",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Preparar Items de URL": {
+      "main": [
+        [
+          {
+            "node": "Split in Batches",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Split in Batches": {
+      "main": [
+        [
+          {
+            "node": "ScrapingBee Render HTML",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "ScrapingBee Render HTML": {
+      "main": [
+        [
+          {
+            "node": "IA Generador SEO (Gemini/OpenAI)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "IA Generador SEO (Gemini/OpenAI)": {
+      "main": [
+        [
+          {
+            "node": "Acumulador de Resultados",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Acumulador de Resultados": {
+      "main": [
+        [
+          {
+            "node": "Split in Batches",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Enviar Reporte Email",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  }
+}
