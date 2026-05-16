@@ -17,14 +17,6 @@ export default function RootLayout({
   return (
     <html lang="es">
       <body className={`${inter.className} antialiased`}>
-        {/* Prueba de Despliegue Continuo (CI/CD) - Imagen de Maradona */}
-        <div className="fixed top-4 right-4 z-50 pointer-events-none">
-          <img 
-            src="https://upload.wikimedia.org/wikipedia/commons/2/2c/Maradona-Mundial_86_con_la_copa.JPG" 
-            alt="Maradona" 
-            className="w-16 h-16 rounded-full border-2 border-blue-500 shadow-xl object-cover"
-          />
-        </div>
         {children}
       </body>
     </html>
