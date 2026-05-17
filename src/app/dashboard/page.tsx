@@ -14,7 +14,11 @@ import {
   UserCircle,
   LogOut,
   ShieldCheck,
-  Settings
+  Settings,
+  Database,
+  Search,
+  Cpu,
+  FileText
 } from "lucide-react";
 
 // Placeholder para la URL de n8n
@@ -102,16 +106,37 @@ function DashboardContent() {
                 Herramientas
               </p>
               <nav className="space-y-2">
-                <button className="w-full flex items-center gap-3 px-3 py-3 rounded-lg text-sm font-semibold transition-colors bg-blue-50 text-blue-700 border border-blue-100">
-                  <PackageSearch className="w-5 h-5 shrink-0 text-blue-600" />
-                  <span className="text-left">Optimización de Productos</span>
-                </button>
-                <div className="w-full flex items-center gap-3 px-3 py-3 rounded-lg text-sm font-medium transition-colors text-slate-400 bg-transparent cursor-not-allowed opacity-70">
-                  <BarChart className="w-5 h-5 shrink-0" />
-                  <div className="flex flex-col text-left">
-                    <span>Auditoría SEO General</span>
-                    <span className="text-[10px] text-slate-400 font-normal">Próximamente</span>
+                <button className="w-full flex items-center justify-between px-3 py-2.5 rounded-md text-sm transition-colors bg-blue-50 text-blue-700 font-semibold border border-blue-100">
+                  <div className="flex items-center gap-3">
+                    <PackageSearch className="w-4 h-4 shrink-0 text-blue-600" />
+                    <span className="text-left">Optimización de Productos</span>
                   </div>
+                  <span className="text-[10px] px-2 py-0.5 rounded font-bold bg-blue-100 text-blue-800">Activo</span>
+                </button>
+                <div className="w-full flex items-center justify-between px-3 py-2.5 rounded-md text-sm font-medium transition-colors text-slate-500 bg-transparent cursor-not-allowed opacity-60 hover:bg-slate-50">
+                  <div className="flex items-center gap-3">
+                    <Search className="w-4 h-4 shrink-0" />
+                    <span className="text-left">Análisis de Enlaces</span>
+                  </div>
+                  <span className="text-[10px] px-2 py-0.5 rounded font-bold bg-slate-100 text-slate-500">Módulo</span>
+                </div>
+                <div className="w-full flex items-center justify-between px-3 py-2.5 rounded-md text-sm font-medium transition-colors text-slate-500 bg-transparent cursor-not-allowed opacity-60 hover:bg-slate-50">
+                  <div className="flex items-center gap-3">
+                    <Cpu className="w-4 h-4 shrink-0" />
+                    <span className="text-left">Rendimiento Web</span>
+                  </div>
+                  <span className="text-[10px] px-2 py-0.5 rounded font-bold bg-slate-100 text-slate-500">Módulo</span>
+                </div>
+                <div className="w-full flex items-center justify-between px-3 py-2.5 rounded-md text-sm font-medium transition-colors text-slate-500 bg-transparent cursor-not-allowed opacity-60 hover:bg-slate-50">
+                  <div className="flex items-center gap-3">
+                    <Layers className="w-4 h-4 shrink-0" />
+                    <span className="text-left">Estructura de Títulos</span>
+                  </div>
+                  <span className="text-[10px] px-2 py-0.5 rounded font-bold bg-slate-100 text-slate-500">Módulo</span>
+                </div>
+                <div className="w-full flex items-center gap-3 px-3 py-2.5 rounded-md text-sm font-medium transition-colors text-slate-500 bg-transparent cursor-not-allowed opacity-60 hover:bg-slate-50">
+                  <FileText className="w-4 h-4 shrink-0" />
+                  <span className="text-left">Historial de Reportes</span>
                 </div>
               </nav>
             </div>
