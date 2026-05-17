@@ -20,7 +20,7 @@ export default function TiendanubeSuccessPage() {
 
         <div className="mt-8 pt-6 border-t border-slate-100">
           <Link
-            href="https://google.com"
+            href="/dashboard?source=tiendanube&user_id=123"
             className="w-full flex justify-center items-center gap-2 py-3.5 px-4 border border-transparent rounded-lg shadow-sm text-sm font-bold text-white transition-all bg-blue-600 hover:bg-blue-700 hover:shadow-md cursor-pointer"
           >
             <span>Ir a Panel de Gestión</span>
