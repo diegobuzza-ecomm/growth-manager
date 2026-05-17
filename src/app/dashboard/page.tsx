@@ -2,6 +2,7 @@
 
 import React, { useState, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
+import Link from "next/link";
 import { 
   PackageSearch, 
   BarChart, 
@@ -147,14 +148,10 @@ function DashboardContent() {
                 Cuenta
               </p>
               <nav className="space-y-2">
-                <button className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-colors">
-                  <CreditCard className="w-5 h-5 shrink-0 text-slate-400" />
-                  <span className="text-left">Mi Suscripción</span>
-                </button>
-                <button className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-colors">
+                <Link href="/dashboard/settings" className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-colors">
                   <Settings className="w-5 h-5 shrink-0 text-slate-400" />
                   <span className="text-left">Configuración</span>
-                </button>
+                </Link>
               </nav>
             </div>
           </div>
