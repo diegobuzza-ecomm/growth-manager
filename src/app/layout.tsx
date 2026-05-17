@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
+import packageInfo from "../../package.json";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -16,8 +17,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="es">
-      <body className={`${inter.className} antialiased`}>
+      <body className={`${inter.className} antialiased relative`}>
         {children}
+        {/* Indicador de Versión */}
+        <div className="fixed bottom-2 right-3 z-50 pointer-events-none opacity-50 text-[10px] font-mono text-slate-500 font-medium tracking-wider">
+          v{packageInfo.version}
+        </div>
       </body>
     </html>
   );
